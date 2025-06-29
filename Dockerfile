@@ -14,8 +14,13 @@ RUN echo '#!/bin/sh' > /usr/local/bin/claude-code && \
 # Set SHELL environment variable for Claude Code CLI
 ENV SHELL=/bin/bash
 
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S claude -u 1001 -G nodejs
+
 WORKDIR /app
 
+# Install dependencies as root first
 COPY package*.json ./
 RUN npm install
 
@@ -30,12 +35,15 @@ RUN mkdir -p logs
 # Keep dev dependencies for in-container updates
 # RUN npm prune --omit=dev
 
-# Create Claude configuration directory and volume mount point
-RUN mkdir -p /root/.config/claude
-RUN mkdir -p /root/.claude
+# Create Claude configuration directory for non-root user
+RUN mkdir -p /home/claude/.config/claude
+RUN mkdir -p /home/claude/.claude
 
-# Copy Claude configuration
-COPY claude_config.json /root/.config/claude/claude_desktop_config.json
+# Claude configuration will be created by setup script
+
+# Change ownership of app directory to non-root user
+RUN chown -R claude:nodejs /app
+RUN chown -R claude:nodejs /home/claude
 
 # Create entrypoint script to configure MCP on container start
 COPY setup-mcp.sh /usr/local/bin/setup-mcp.sh
@@ -44,6 +52,9 @@ RUN chmod +x /usr/local/bin/setup-mcp.sh
 # Copy update script and make executable
 COPY update.sh /usr/local/bin/update.sh
 RUN chmod +x /usr/local/bin/update.sh
+
+# Switch to non-root user
+USER claude
 
 EXPOSE 8080
 

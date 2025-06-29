@@ -13,6 +13,9 @@ router.get('/health', HealthController.health);
 // Pull request review endpoint (auth required, no admin needed)
 router.post('/api/review', authenticateApiKey, ReviewController.reviewPullRequest);
 
+// Test setup endpoint (admin only) - for debugging
+router.get('/api/test-setup', authenticateApiKey, requireAdmin, ReviewController.testSetup);
+
 // Deployment endpoints (admin only)
 router.post('/api/deploy', authenticateApiKey, requireAdmin, DeployController.deploy);
 router.get('/api/deploy/status', authenticateApiKey, requireAdmin, DeployController.deployStatus);

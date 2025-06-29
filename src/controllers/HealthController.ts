@@ -1,4 +1,4 @@
-import { Context } from 'koa';
+import { Context } from "koa";
 
 export class HealthController {
   static async health(ctx: Context) {
@@ -7,6 +7,7 @@ export class HealthController {
       status: "ok",
       timestamp: new Date().toISOString(),
       service: "claude-review",
+      author: "Martin Aranda",
     };
   }
 }
