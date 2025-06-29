@@ -40,13 +40,13 @@ log "${YELLOW}Pulling latest changes from git...${NC}"
 git fetch origin || handle_error "Git fetch failed"
 git reset --hard origin/main || handle_error "Git reset failed"
 
-# Install/update dependencies
+# Install/update dependencies (including dev dependencies for compilation)
 log "${YELLOW}Installing dependencies...${NC}"
-npm install || handle_error "npm install failed"
+npm install --include=dev || handle_error "npm install failed"
 
 # Compile TypeScript
 log "${YELLOW}Compiling TypeScript...${NC}"
-npx tsc || npm run build || handle_error "TypeScript compilation failed"
+npm run build || handle_error "TypeScript compilation failed"
 
 # Test if the build was successful
 if [ ! -f "dist/index.js" ]; then
