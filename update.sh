@@ -46,7 +46,7 @@ npm install || handle_error "npm install failed"
 
 # Compile TypeScript
 log "${YELLOW}Compiling TypeScript...${NC}"
-npm run build || handle_error "TypeScript compilation failed"
+npx tsc || npm run build || handle_error "TypeScript compilation failed"
 
 # Test if the build was successful
 if [ ! -f "dist/index.js" ]; then
