@@ -20,6 +20,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Container runs on port 8080 with volume persistence
 - Container uses PM2 runtime for process stability and auto-restart
 
+### In-Container Deployment
+- `POST /api/deploy` - Triggers git pull, build, and PM2 reload
+- Zero-downtime updates preserving Claude authentication state
+- Automatic backup and rollback on build failures
+- Manual deployment: `docker exec <container> /usr/local/bin/update.sh`
+
 ## Architecture Overview
 
 This is a **Koa.js web service** with API key-based authentication system. The service uses NeDB for data persistence and follows a controller-service pattern for clean code organization.
@@ -46,6 +52,8 @@ This is a **Koa.js web service** with API key-based authentication system. The s
 ### Current Endpoints
 - `/health` - Health check endpoint (no auth required)
 - `POST /api/review` - Initiate PR review using Claude CLI (auth required)
+- `POST /api/deploy` - Deploy latest code from git repository (admin only)
+- `GET /api/deploy/status` - Get current deployment status and PM2 info (admin only)
 - `POST /api/keys` - Create new API key (admin only)
 - `GET /api/keys` - List all API keys (admin only) 
 - `DELETE /api/keys/:key` - Delete API key (admin only)
@@ -53,8 +61,10 @@ This is a **Koa.js web service** with API key-based authentication system. The s
 ### Container Architecture
 - Multi-stage Docker build with Node.js 18 Alpine
 - Claude Code CLI and GitHub MCP server installed globally via npm
+- Git and development tools kept for in-container updates
 - Claude configuration directory setup at `/root/.config/claude`
 - MCP setup script (`setup-mcp.sh`) runs on container start
+- Update script (`update.sh`) available at `/usr/local/bin/update.sh`
 - Volume persistence for Claude authentication state
 
 ## Environment Variables
@@ -66,10 +76,13 @@ This is a **Koa.js web service** with API key-based authentication system. The s
 
 ## Technical Notes
 - TypeScript compilation target: ES2020 with CommonJS modules
-- Docker container includes bash and necessary tools for Claude Code CLI
+- Docker container includes bash, git and necessary tools for Claude Code CLI
 - Claude Code CLI shebang issue fixed for Alpine Linux compatibility
 - Volume mount for `/root/.claude` to persist authentication across container restarts
 - PR review endpoint uses shell command substitution to combine `prompt.txt` with PR URL
 - Claude CLI calls are executed non-interactively with `-p` flag and run asynchronously
 - PM2 provides process management with auto-restart, memory monitoring (1GB limit), and structured logging
 - PM2 ecosystem configuration includes error/output/combined log files in `/app/logs/` directory
+- In-container deployment system preserves Claude authentication while updating code
+- Development dependencies kept in production for TypeScript compilation during updates
+- Deployment script includes backup/rollback mechanism and zero-downtime PM2 reload

@@ -1,7 +1,7 @@
 FROM node:18-alpine
 
-# Install bash and other necessary tools
-RUN apk add --no-cache bash
+# Install bash, git and other necessary tools
+RUN apk add --no-cache bash git
 
 # Install Claude Code CLI and GitHub MCP
 RUN npm install -g @anthropic-ai/claude-code@latest @modelcontextprotocol/server-github
@@ -28,7 +28,8 @@ RUN cp -r public dist/
 # Create logs directory for PM2
 RUN mkdir -p logs
 
-RUN npm prune --omit=dev
+# Keep dev dependencies for in-container updates
+# RUN npm prune --omit=dev
 
 # Create Claude configuration directory and volume mount point
 RUN mkdir -p /root/.config/claude
@@ -40,6 +41,10 @@ COPY claude_config.json /root/.config/claude/claude_desktop_config.json
 # Create entrypoint script to configure MCP on container start
 COPY setup-mcp.sh /usr/local/bin/setup-mcp.sh
 RUN chmod +x /usr/local/bin/setup-mcp.sh
+
+# Copy update script and make executable
+COPY update.sh /usr/local/bin/update.sh
+RUN chmod +x /usr/local/bin/update.sh
 
 EXPOSE 8080
 
