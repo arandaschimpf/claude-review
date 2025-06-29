@@ -1,0 +1,39 @@
+{
+  "name": "claude-review",
+  "version": "1.0.0",
+  "description": "A Koa server for claude-review",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "start:pm2": "pm2 start ecosystem.config.js",
+    "stop:pm2": "pm2 stop claude-review",
+    "restart:pm2": "pm2 restart claude-review",
+    "logs:pm2": "pm2 logs claude-review",
+    "dev": "tsx watch src/index.ts"
+  },
+  "dependencies": {
+    "@types/nedb": "^1.8.16",
+    "@types/uuid": "^10.0.0",
+    "dotenv": "^17.0.0",
+    "koa": "^2.14.2",
+    "koa-bodyparser": "^4.4.1",
+    "koa-router": "^12.0.0",
+    "koa-static": "^5.0.0",
+    "nedb-promises": "^6.2.3",
+    "pm2": "^6.0.8",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.13.12",
+    "@types/koa-bodyparser": "^4.3.12",
+    "@types/koa-router": "^7.4.8",
+    "@types/koa-static": "^4.0.4",
+    "@types/node": "^20.19.2",
+    "tsx": "^4.7.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

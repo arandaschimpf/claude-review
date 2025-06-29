@@ -1,0 +1,18 @@
+services:
+  claude-review:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - PORT=8080
+      - SHELL=/bin/bash
+    env_file:
+      - .env
+    volumes:
+      - claude_auth:/root/.claude
+    stdin_open: true
+    tty: true
+
+volumes:
+  claude_auth:
