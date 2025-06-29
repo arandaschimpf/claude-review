@@ -12,10 +12,17 @@ export class ReviewController {
       return;
     }
 
-    // Basic URL validation
-    if (!url.includes('github.com') || !url.includes('/pull/')) {
+    // Proper URL validation with hostname checking
+    try {
+      const parsedUrl = new URL(url);
+      if (parsedUrl.hostname !== 'github.com' || !parsedUrl.pathname.includes('/pull/')) {
+        ctx.status = 400;
+        ctx.body = { error: "Invalid GitHub pull request URL" };
+        return;
+      }
+    } catch (urlError) {
       ctx.status = 400;
-      ctx.body = { error: "Invalid GitHub pull request URL" };
+      ctx.body = { error: "Invalid URL format" };
       return;
     }
 

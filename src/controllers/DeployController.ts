@@ -14,7 +14,7 @@ export class DeployController {
       };
 
       // Execute update script asynchronously
-      exec('/usr/local/bin/update.sh', (error, stdout, stderr) => {
+      exec('/app/update.sh', (error, stdout, stderr) => {
         if (error) {
           console.error(`Deployment failed: ${error}`);
           console.error(`stderr: ${stderr}`);

@@ -25,6 +25,7 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
+RUN chmod +x update.sh
 RUN npm run build
 
 # Public directory not needed for this application
@@ -49,9 +50,7 @@ RUN chown -R claude:nodejs /home/claude
 COPY setup-mcp.sh /usr/local/bin/setup-mcp.sh
 RUN chmod +x /usr/local/bin/setup-mcp.sh
 
-# Copy update script and make executable
-COPY update.sh /usr/local/bin/update.sh
-RUN chmod +x /usr/local/bin/update.sh
+# Update script will be available in /app after COPY . . and made executable there
 
 # Switch to non-root user
 USER claude

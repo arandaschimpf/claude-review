@@ -40,12 +40,10 @@ log "${YELLOW}Pulling latest changes from git...${NC}"
 git fetch origin || handle_error "Git fetch failed"
 git reset --hard origin/main || handle_error "Git reset failed"
 
-# Update the script itself if it has changed
-log "${YELLOW}Updating deployment script...${NC}"
-if [ -f "/app/update.sh" ]; then
-    cp /app/update.sh /usr/local/bin/update.sh || handle_error "Failed to update script"
-    chmod +x /usr/local/bin/update.sh || handle_error "Failed to make script executable"
-fi
+# Ensure update script has execute permissions after git reset
+chmod +x /app/update.sh || handle_error "Failed to set execute permissions on update script"
+
+# Script is now updated via git pull above - no need to copy it elsewhere
 
 # Install/update dependencies
 log "${YELLOW}Installing dependencies...${NC}"
