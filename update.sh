@@ -45,9 +45,9 @@ chmod +x /app/update.sh || handle_error "Failed to set execute permissions on up
 
 # Script is now updated via git pull above - no need to copy it elsewhere
 
-# Install/update dependencies
+# Install/update dependencies including devDependencies for TypeScript compilation
 log "${YELLOW}Installing dependencies...${NC}"
-npm install || handle_error "npm install failed"
+npm install --include=dev || handle_error "npm install failed"
 
 # Compile TypeScript
 log "${YELLOW}Compiling TypeScript...${NC}"
