@@ -3,8 +3,8 @@ FROM node:18-alpine
 # Install bash, git and other necessary tools
 RUN apk add --no-cache bash git
 
-# Install Claude Code CLI and GitHub MCP
-RUN npm install -g @anthropic-ai/claude-code@latest @modelcontextprotocol/server-github
+# Install Claude Code CLI, GitHub MCP, and TypeScript globally
+RUN npm install -g @anthropic-ai/claude-code@latest @modelcontextprotocol/server-github typescript
 
 # Fix Claude Code CLI shebang issue for Alpine
 RUN echo '#!/bin/sh' > /usr/local/bin/claude-code && \

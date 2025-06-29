@@ -47,9 +47,9 @@ if [ -f "/app/update.sh" ]; then
     chmod +x /usr/local/bin/update.sh || handle_error "Failed to make script executable"
 fi
 
-# Install/update dependencies (including dev dependencies for compilation)
+# Install/update dependencies
 log "${YELLOW}Installing dependencies...${NC}"
-npm install --include=dev || handle_error "npm install failed"
+npm install || handle_error "npm install failed"
 
 # Compile TypeScript
 log "${YELLOW}Compiling TypeScript...${NC}"
