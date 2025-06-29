@@ -52,7 +52,14 @@ class ApiKeyService {
     if (masterApiKey) {
       const existingKey = await this.findByKey(masterApiKey);
       if (!existingKey) {
-        await this.createApiKey("Master Key", true);
+        // Create master key with the provided key value
+        const apiKey: ApiKey = {
+          key: masterApiKey,
+          name: "Master Key",
+          isAdmin: true,
+          createdAt: new Date()
+        };
+        await this.db.insert(apiKey);
         console.log("Master API key initialized");
       }
     } else {

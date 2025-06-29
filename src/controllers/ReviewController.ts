@@ -20,7 +20,7 @@ export class ReviewController {
 
     try {
       // Use shell command substitution to concatenate prompt.txt content with URL
-      const command = `claude-code -p "$(cat /app/prompt.txt) ${url}"`;
+      const command = `claude-code -p --accept-tools=read,mcp "$(cat /app/prompt.txt) ${url}"`;
       
       // Execute without waiting for completion
       exec(command, (error, stdout, stderr) => {

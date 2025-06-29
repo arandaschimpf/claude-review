@@ -22,8 +22,7 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-# Copy public directory to the correct location
-RUN cp -r public dist/
+# Public directory not needed for this application
 
 # Create logs directory for PM2
 RUN mkdir -p logs
