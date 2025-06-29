@@ -40,6 +40,13 @@ log "${YELLOW}Pulling latest changes from git...${NC}"
 git fetch origin || handle_error "Git fetch failed"
 git reset --hard origin/main || handle_error "Git reset failed"
 
+# Update the script itself if it has changed
+log "${YELLOW}Updating deployment script...${NC}"
+if [ -f "/app/update.sh" ]; then
+    cp /app/update.sh /usr/local/bin/update.sh || handle_error "Failed to update script"
+    chmod +x /usr/local/bin/update.sh || handle_error "Failed to make script executable"
+fi
+
 # Install/update dependencies (including dev dependencies for compilation)
 log "${YELLOW}Installing dependencies...${NC}"
 npm install --include=dev || handle_error "npm install failed"
