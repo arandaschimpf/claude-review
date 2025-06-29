@@ -9,7 +9,8 @@ module.exports = {
       max_memory_restart: '1G',
       env: {
         NODE_ENV: 'production',
-        PORT: 8080
+        PORT: 8080,
+        REPO_URL: process.env.REPO_URL || 'https://github.com/arandaschimpf/claude-review.git'
       },
       error_file: './logs/err.log',
       out_file: './logs/out.log',

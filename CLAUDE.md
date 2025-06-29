@@ -69,6 +69,7 @@ This is a **Koa.js web service** with API key-based authentication system. The s
 
 ## Environment Variables
 - `MASTER_API_KEY` - Master/admin API key for initial setup and key management
+- `REPO_URL` - Git repository URL for deployments (defaults to `https://github.com/arandaschimpf/claude-review.git`)
 - `PORT` - Server port (defaults to 8080)
 - `NODE_ENV` - Environment mode
 - `SHELL` - Set to `/bin/bash` for Claude Code CLI compatibility

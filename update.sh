@@ -26,6 +26,15 @@ cd /app || handle_error "Could not change to /app directory"
 log "${YELLOW}Creating backup...${NC}"
 cp -r dist dist.backup || handle_error "Could not create backup"
 
+# Check if git repository is initialized
+if [ ! -d ".git" ]; then
+    log "${YELLOW}Initializing git repository...${NC}"
+    git init || handle_error "Git init failed"
+    git remote add origin ${REPO_URL:-https://github.com/arandaschimpf/claude-review.git} || handle_error "Adding remote failed"
+    git config user.email "container@claude-review.local"
+    git config user.name "Claude Review Container"
+fi
+
 # Pull latest changes
 log "${YELLOW}Pulling latest changes from git...${NC}"
 git fetch origin || handle_error "Git fetch failed"

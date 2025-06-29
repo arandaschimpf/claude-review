@@ -7,6 +7,7 @@ services:
       - NODE_ENV=production
       - PORT=8080
       - SHELL=/bin/bash
+      - REPO_URL=https://github.com/arandaschimpf/claude-review.git
     env_file:
       - .env
     volumes:
